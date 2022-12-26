@@ -30,6 +30,30 @@ img.black_queen{
     padding-top: 7px;
 }
 
+img.white_horse{
+    padding-top: 9px;
+}
+
+.black_paw{
+    width: 45px;
+    padding-top: 7px;
+}
+
+.black_top{
+    width: 45px;
+    padding-top: 7px;
+}
+
+.white_top{
+    width: 45px;
+    padding-top: 9px;
+}
+
+.white_paw{
+    width: 45px;
+    padding-top: 10px;
+}
+
 img{
     width: 60px;
     height: auto;
