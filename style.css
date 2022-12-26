@@ -7,12 +7,42 @@
     height: 560px;
 }
 
-
-
 .black{
-    background-color: black;
+    background-color: rgb(255, 178, 102);
+    color: white;
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    text-align: center;   
+}
+
+img.black_king{
+    padding-top: 7px;
+}
+
+
+img.white_queen{
+    padding-top: 7px;
+}
+
+img.black_queen{
+    padding-top: 7px;
+}
+
+img{
+    width: 60px;
+    height: auto;
+    padding-top: 4px;
 }
 
 .white{
-    background-color: grey;
+    background-color: rgb(255, 229, 204);
+    color: white;
+    
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    text-align: center
 }
