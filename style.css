@@ -2,9 +2,12 @@
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto ;
     padding: 70px 200px;
-    gap: 2px solid black;
     width: 560px;
     height: 560px;
+}
+
+.block{
+    border: 1px solid black;
 }
 
 .black{
@@ -14,7 +17,8 @@
     height: 70px;
     max-width: 70px;
     max-height: 70px;
-    text-align: center;   
+    text-align: center; 
+    border: 1px solid black;  
 }
 
 img.black_king{
@@ -68,5 +72,19 @@ img{
     height: 70px;
     max-width: 70px;
     max-height: 70px;
-    text-align: center
+    text-align: center;
+    border: 1px solid black;
+}
+
+
+.green{
+    color: white;
+    
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    text-align: center;
+    background-color: rgb(155, 255, 204);
+    border: 1px solid black;
 }
