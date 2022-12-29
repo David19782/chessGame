@@ -229,43 +229,43 @@ window.addEventListener("load", () => {
         if(i == 0){
             for(let j = 0; j < 8; j++){
                 if(j == 0 || j == 7){
-                    pole[i][j] = new Top([i, j], "black", "black_top");
+                    pole[i][j] = new Top([i, j], "black", urls["black_top"]);
                 }
                 if(j == 1 || j == 6){
-                    pole[i][j] = new Bishup([i, j], "black", "black_bishup");
+                    pole[i][j] = new Bishup([i, j], "black", urls["black_bishup"]);
                 }
                 if(j == 2 || j == 5){
-                    pole[i][j] = new Horse([i, j], "black", "black_horse");
+                    pole[i][j] = new Horse([i, j], "black", urls["black_horse"]);
                 }
                 if(j == 3){
-                    pole[i][j] = new King([i, j], "black", "black_king");
+                    pole[i][j] = new King([i, j], "black", urls["black_king"]);
                 }            
                 if(j == 4){
-                    pole[i][j] = new Queen([i, j], "black", "black_king");
+                    pole[i][j] = new Queen([i, j], "black", urls["black_queen"]);
                 }
             }
         }
         if(i == 7){
             for(let j = 0; j < 8; j++){
                 if(j == 0 || j == 7){
-                    pole[i][j] = new Top([i, j], "white", "white_top");
+                    pole[i][j] = new Top([i, j], "white", urls["white_top"]);
                 }
                 if(j == 1 || j == 6){
-                    pole[i][j] = new Bishup([i, j], "white", "white_bishup");
+                    pole[i][j] = new Bishup([i, j], "white", urls["white_bishup"]);
                 }
                 if(j == 2 || j == 5){
-                    pole[i][j] = new Horse([i, j], "white", "white_horse");
+                    pole[i][j] = new Horse([i, j], "white", urls["white_horse"]);
                 }
                 if(j == 3){
-                    pole[i][j] = new King([i, j], "white", "white_king");
+                    pole[i][j] = new King([i, j], "white", urls["white_king"]);
                 }            
                 if(j == 4){
-                    pole[i][j] = new Queen([i, j], "white", "white_king");
+                    pole[i][j] = new Queen([i, j], "white", urls["white_queen"]);
                 }
             }
         }
     }
-    console.log(pole)
+    //console.log(pole)
     // make test
 
     
@@ -287,6 +287,40 @@ window.addEventListener("load", () => {
         }
     }
     genTable();
+    function clearBoard(){
+        for(let i = 0; i < 8; i++){
+            for(let j = 0; j < 8; j++){
+                if(i % 2 == j % 2){
+                    table[i][j].setAttribute("class", "white");
+                }else{
+                    table[i][j].setAttribute("class", "black");
+                }
+            }
+        }
+    }
+
+    function moveFigure(position1, position2){
+        let curr = table[position1[0]][position1[1]].children[0];
+        let type = curr.className;
+        let fig = type.split("_")[1];
+        pole[position1[0]][position1[1]] = undefined;
+        if(fig == "paw"){
+            pole[position2[0]][position2[1]] = new Paw([...position2], type.split("_")[0], urls[type]);
+        }else if(fig == "king"){
+            pole[position2[0]][position2[1]] = new King([...position2], type.split("_")[0], urls[type]);
+        }else if(fig == "queen"){
+            pole[position2[0]][position2[1]] = new Queen([...position2], type.split("_")[0], urls[type]);
+        }else if(fig == "bishup"){
+            pole[position2[0]][position2[1]] = new Bishup([...position2], type.split("_")[0], urls[type]);
+        }else if(fig == "horse"){
+            pole[position2[0]][position2[1]] = new Horse([...position2], type.split("_")[0], urls[type]);
+        }else if(fig == "Top"){
+            pole[position2[0]][position2[1]] = new Top([...position2], type.split("_")[0], urls[type]);
+        }
+        
+        table[position2[0]][position2[1]].appendChild(makeImg(type))
+        table[position1[0]][position1[1]].children[0].remove();
+    }
     let player1 = new White_Player();
     let player2 = new Black_Player();
     player1.display().forEach(el => {
@@ -301,6 +335,10 @@ window.addEventListener("load", () => {
     
     // make events
     let selected = false;
+    let obj = {
+        currPosition: [],
+        avMoves: []
+    }
     let currMoves = [];
     document.getElementsByClassName("game")[0].addEventListener("click", (e) => {
         //console.log(e.target);
@@ -315,16 +353,48 @@ window.addEventListener("load", () => {
         //console.log(curr.id)
         if(!selected && curr.children.length == 0)return;
         
-        //console.log(curr.children[0]);
-        selected = !selected;
+        //get position of pressed square
         let position = curr.id.split("_").map(el => Number(el));
         console.log(position);
         console.log(pole[position[0]][position[1]]);
+        
+        if(selected){
+            if(position[0] == obj.currPosition[0] && position[1] == obj.currPosition[1]){
+                selected = false;
+                clearBoard();
+                return;
+            }
+            let m = false;
+            for(let i = 0; i < obj.avMoves.length; i++){
+                if(obj.avMoves[i][0] == position[0] && obj.avMoves[i][1] == position[1]){
+                    console.log("Move figure");
+                    m = true;
+                    break;
+                }
+            }
+            if(m){
+                moveFigure(obj.currPosition, position);
+                clearBoard();
+                selected = false;
+                obj = {};
+                return;
+            }
+            console.log(obj)
+            return;
+        }
+
+
         if(pole[position[0]][position[1]] != undefined){
             currMoves = [...pole[position[0]][position[1]].move(pole)];
+            obj.currPosition = [...position];
+            obj.avMoves = [...currMoves];
             currMoves.forEach(e => {
+                
                 table[e[0]][e[1]].setAttribute("class", "green");
+                
             })
+            selected = true;
+            
         }
         
         
