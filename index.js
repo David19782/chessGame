@@ -30,22 +30,48 @@ window.addEventListener("load", () => {
             this.url = url;
         }
         
-        move(table, position, type) {
+        move(table) {
             let avMoves = [];
-            let [i, j] = position;
-            if(type == "white"){
+            let [i, j] = this.position;
+            if(i == 0){
+                this.becomeQueen();
+            }
+            if(this.type == "white"){
                 if(table[i - 1][j] == undefined){
                     avMoves.push([i - 1, j]);
                     if(i == 6 && table[i - 2][j] == undefined){
                         avMoves.push([i - 2, j]);
                     }
+                    
+                }
+                if(table[i - 1][j - 1] != undefined){
+                    avMoves.push([i - 1, j - 1]);
+                }
+                if(table[i - 1][j - 1] != undefined){
+                    avMoves.push([i - 1, j + 1]);
                 }
                 
             }else{
-
+                if(table[i + 1][j] == undefined){
+                    avMoves.push([i + 1, j]);
+                    if(i == 1 && table[i + 2][j] == undefined){
+                        avMoves.push([i + 2, j]);
+                    }
+                    
+                }
+                if(table[i + 1][j - 1] != undefined){
+                    avMoves.push([i + 1, j - 1]);
+                }
+                if(table[i + 1][j - 1] != undefined){
+                    avMoves.push([i + 1, j + 1]);
+                }
             }
             return avMoves;
             
+        }
+
+        becomeQueen(){
+
         }
     }
 
@@ -189,11 +215,16 @@ window.addEventListener("load", () => {
 
     let table = [];
     let pole = [];
+    for(let i = 0; i < 8; i++)pole[i] = [];
     for(let i = 0; i < 8; i++){
-        pole[i] = [];
         if(i == 1){
-            for(let j = 0; j < 8; j++)pole[i][j] = new Paw([i, j], "black", "black_paw");
-            for(let j = 0; j < 8; j++)pole[6][j] = new Paw([6, j], "white", "white_paw");
+            for(let j = 0; j < 8; j++){
+
+                pole[i][j] = new Paw([i, j], "black", urls["black_paw"]);
+            }
+            for(let j = 0; j < 8; j++){
+                pole[6][j] = new Paw([6, j], "white", urls["white_paw"]);
+            }
         }
         if(i == 0){
             for(let j = 0; j < 8; j++){
@@ -234,6 +265,7 @@ window.addEventListener("load", () => {
             }
         }
     }
+    console.log(pole)
     // make test
 
     
@@ -269,20 +301,32 @@ window.addEventListener("load", () => {
     
     // make events
     let selected = false;
+    let currMoves = [];
     document.getElementsByClassName("game")[0].addEventListener("click", (e) => {
         //console.log(e.target);
-        let curr;
+        if(e.target.className == "game")return;
         if(e.target.tagName == "IMG"){
            //   console.log(e.target.parentElement)
             curr = e.target.parentElement;
         }else{
             curr = e.target;
         }
-        console.log(curr.children)
+        //console.log(curr.children)
+        //console.log(curr.id)
         if(!selected && curr.children.length == 0)return;
-        console.log(curr.children[0]);
-        selected = true;
-
+        
+        //console.log(curr.children[0]);
+        selected = !selected;
+        let position = curr.id.split("_").map(el => Number(el));
+        console.log(position);
+        console.log(pole[position[0]][position[1]]);
+        if(pole[position[0]][position[1]] != undefined){
+            currMoves = [...pole[position[0]][position[1]].move(pole)];
+            currMoves.forEach(e => {
+                table[e[0]][e[1]].setAttribute("class", "green");
+            })
+        }
+        
         
     })
     
