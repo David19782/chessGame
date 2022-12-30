@@ -45,9 +45,13 @@ window.addEventListener("load", () => {
                     
                 }
                 if(table[i - 1][j - 1] != undefined){
+                    console.log(table[i - 1][j - 1]);
+                    if(table[i - 1][j - 1].type == "black"){
+                        
+                    }
                     avMoves.push([i - 1, j - 1]);
                 }
-                if(table[i - 1][j - 1] != undefined){
+                if(table[i - 1][j + 1] != undefined){
                     avMoves.push([i - 1, j + 1]);
                 }
                 
@@ -62,7 +66,7 @@ window.addEventListener("load", () => {
                 if(table[i + 1][j - 1] != undefined){
                     avMoves.push([i + 1, j - 1]);
                 }
-                if(table[i + 1][j - 1] != undefined){
+                if(table[i + 1][j + 1] != undefined){
                     avMoves.push([i + 1, j + 1]);
                 }
             }
